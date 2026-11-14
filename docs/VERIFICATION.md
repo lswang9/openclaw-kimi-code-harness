@@ -14,7 +14,7 @@
 
 - `npm run typecheck`：通过。
 - `npm run build`：通过。
-- `npm test`：35/35 通过，11 个测试文件；包含 supports、direct 认证路由、原生模型目录、会话映射、流式事件、错误、取消/超时、脱敏、SDK 适配，以及两轮、重启恢复、双会话/双 Agent 隔离、reset 和删除。
+- `npm test`：37/37 通过，12 个测试文件；包含 supports、direct 认证路由、原生模型目录、会话映射、流式事件、错误、取消/超时、脱敏、SDK 适配、assistant transcript 幂等写入，以及两轮、重启恢复、双会话/双 Agent 隔离、reset 和删除。
 - `KIMI_CODE_SOURCE_DIR=$PWD/.research/kimi-code npm run sdk:vendor`：通过；从固定官方源码构建并生成 `vendor/kimi-code-sdk.mjs`。
 - 直接 `import()` 上述 vendor 产物：`createKimiHarness` 导出存在。
 - 官方 CLI `node .../@moonshot-ai/kimi-code/dist/main.mjs --version`：`2.6.2`。
@@ -58,3 +58,9 @@
 
 - 将 `models.providers.kimi.agentRuntime.id` 设置为 `kimi-code`，不再只给单个模型绑定 runtime。
 - 真实执行 `openclaw agent --session-id kimi-code-k31-free --model kimi/k3.1-pro ... --json`，返回 `K31_NATIVE_RUNTIME_OK`，元数据同时确认 `model=k3.1-pro` 和 `agentHarnessId=kimi-code`。
+
+## 0.1.2 transcript 修复验证
+
+- 发现原生回合已产生 output tokens，但 `sessions.get` 只有 user 消息，导致 Dashboard 空白。
+- 增加最终 assistant 的幂等 transcript 写入，支持 `sessionManager` 和公开 `sessionTarget` 两条路径。
+- 真实 `sessions.get` 现已同时包含 user 和 assistant 消息；第二轮同会话继续对话后共有两条 user、两条 assistant，幂等键不同且无重复。

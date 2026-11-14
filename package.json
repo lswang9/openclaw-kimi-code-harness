@@ -1,6 +1,6 @@
 {
   "name": "openclaw-kimi-code-harness",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "OpenClaw Agent Harness powered by the official Kimi Code Node SDK",
   "type": "module",
   "license": "MIT",

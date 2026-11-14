@@ -35,6 +35,7 @@ import {
   type SessionBindingStore,
 } from "./session-binding.js";
 import { supportsKimiCodeRoute } from "./support.js";
+import { persistKimiAttemptTranscript } from "./transcript.js";
 import { resolveWorkspaceDir } from "./workspace.js";
 
 export type HarnessLogger = Readonly<{
@@ -404,7 +405,7 @@ async function runNativeTurn(
       usage = undefined;
     }
   }
-  return buildKimiAttemptResult({
+  const result = buildKimiAttemptResult({
     params,
     bridge,
     ...(ended ? { ended } : {}),
@@ -414,6 +415,19 @@ async function runNativeTurn(
     nativeModel: binding.nativeModel,
     ...(usage ? { usage } : {}),
   });
+  try {
+    return await persistKimiAttemptTranscript(params, result);
+  } catch (transcriptError) {
+    return {
+      ...result,
+      terminal: {
+        kind: "failed",
+        source: "prompt",
+        error: actionableKimiError(transcriptError),
+      },
+      replayMetadata: { hadPotentialSideEffects: true, replaySafe: false },
+    };
+  }
 }
 
 async function waitForCancellation(ended: Promise<unknown>): Promise<void> {
