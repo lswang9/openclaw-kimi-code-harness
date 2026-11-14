@@ -53,6 +53,23 @@ describe("safe approval policy", () => {
     await harness.dispose();
   });
 
+  it("safely rejects approvals on channels without interactive approval UI", async () => {
+    const backend = new FakeKimiBackend();
+    const harness = createKimiCodeAgentHarness({
+      config: DEFAULT_PLUGIN_CONFIG,
+      sessionStore: new MemoryBindingStore(),
+      sdkLoader: async () => backend.module(),
+    });
+    const params = await makeAttempt({ prompt: "APPROVAL", messageChannel: "openclaw-weixin" });
+    const result = await harness.runAttempt(params);
+    expect(result).toMatchObject({
+      terminal: { kind: "ok" },
+      assistantTexts: ["approval:rejected"],
+    });
+    expect(params.hostCapabilities.requestApproval).not.toHaveBeenCalled();
+    await harness.dispose();
+  });
+
   it("maps an OpenClaw allow-once decision without inventing session scope", async () => {
     const backend = new FakeKimiBackend();
     const harness = createKimiCodeAgentHarness({

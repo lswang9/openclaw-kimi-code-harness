@@ -20,10 +20,13 @@ export function createKimiApprovalHandler(
 ): (request: KimiApprovalRequest) => Promise<KimiApprovalResponse> {
   return async (request) => {
     await emitApprovalEvent(params, request, "requested", "pending");
-    if (config.approvalPolicy === "deny") {
+    if (config.approvalPolicy === "deny" || shouldDenyWithoutInteractiveApproval(params)) {
       const response = {
         decision: "rejected",
-        feedback: "Kimi Code approvals are disabled by the plugin's controlled deny policy.",
+        feedback:
+          config.approvalPolicy === "deny"
+            ? "Kimi Code approvals are disabled by the plugin's controlled deny policy."
+            : "This channel cannot complete an interactive approval, so the action was safely rejected.",
       } as const;
       await emitApprovalEvent(params, request, "resolved", "denied");
       return response;
@@ -119,6 +122,11 @@ export function createKimiQuestionHandler(
       return null;
     }
   };
+}
+
+function shouldDenyWithoutInteractiveApproval(params: Attempt): boolean {
+  const channel = params.messageChannel ?? params.messageProvider;
+  return channel === "openclaw-weixin" || params.trigger === "cron";
 }
 
 function toOpenClawQuestion(
