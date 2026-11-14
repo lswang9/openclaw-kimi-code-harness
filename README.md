@@ -102,6 +102,33 @@ kimi doctor
 
 `kimi/kimi-for-coding` 的模型目录和 Provider 仍由 OpenClaw 官方 `kimi` 插件提供；本包不重复注册 Provider。
 
+### 自由选择模型
+
+如果希望 K3、K3.1 Pro、K3.1 Pro Highspeed 等其他原生模型也都由 Kimi Code 执行，可以把 runtime 绑定提升到整个 `kimi` Provider，而不是只绑定一个模型：
+
+```json
+{
+  "models": {
+    "providers": {
+      "kimi": {
+        "agentRuntime": {
+          "id": "kimi-code"
+        }
+      }
+    }
+  },
+  "agents": {
+    "defaults": {
+      "model": {
+        "primary": "kimi/kimi-for-coding"
+      }
+    }
+  }
+}
+```
+
+之后在模型选择器中切换模型不会改变执行 Harness：所有兼容的 Kimi 模型仍由 Kimi Code 原生 Agent Loop 执行。实际可选范围以 Kimi Code 原生配置和 `loadModelCatalog` 返回的模型为准；其他 Provider 的模型不受影响。
+
 可选插件配置：
 
 ```json

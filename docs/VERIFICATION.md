@@ -53,3 +53,8 @@
 - `0.1.1` 允许 direct 路由但不转发该凭据，仍只使用 Kimi Code 官方原生认证；显式 auth profile 仍拒绝。
 - 真实 Gateway 上安装 `0.1.1` 后，通过 `openclaw agent --session-id kimi-code-harness-live-fix ... --json` 返回 `KIMI_CODE_SWITCH_OK`，并确认 `agentHarnessId=kimi-code`。
 - 另一个 `openclaw-lark` 插件的稳定版和 beta 均与当前 OpenClaw 存在独立 `./plugin-sdk` 导出错误；为恢复 Agent 回合，已在本机停用该插件，配置和安装文件保留。
+
+## Provider 级自由选模验证
+
+- 将 `models.providers.kimi.agentRuntime.id` 设置为 `kimi-code`，不再只给单个模型绑定 runtime。
+- 真实执行 `openclaw agent --session-id kimi-code-k31-free --model kimi/k3.1-pro ... --json`，返回 `K31_NATIVE_RUNTIME_OK`，元数据同时确认 `model=k3.1-pro` 和 `agentHarnessId=kimi-code`。
