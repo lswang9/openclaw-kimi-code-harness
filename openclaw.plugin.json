@@ -1,0 +1,52 @@
+{
+  "id": "kimi-code-harness",
+  "name": "Kimi Code Agent Harness",
+  "description": "Runs explicitly selected OpenClaw turns in the official Kimi Code native agent runtime.",
+  "categories": ["agent-runtimes"],
+  "activation": {
+    "onStartup": false,
+    "onAgentHarnesses": ["kimi-code"]
+  },
+  "sessionRouteStateOwners": [
+    {
+      "id": "kimi-code-harness",
+      "label": "Kimi Code",
+      "providerIds": ["kimi", "kimi-code", "kimi-coding"],
+      "runtimeIds": ["kimi-code"],
+      "cliSessionKeys": ["kimi-code"],
+      "authProfilePrefixes": []
+    }
+  ],
+  "configSchema": {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "homeDir": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Optional Kimi Code home. Defaults to the official KIMI_CODE_HOME resolution."
+      },
+      "configPath": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Optional official Kimi Code config.toml path."
+      },
+      "sdkModule": {
+        "type": "string",
+        "minLength": 1,
+        "description": "Optional @moonshot-ai/kimi-code-sdk package name or absolute module path override."
+      },
+      "approvalPolicy": {
+        "type": "string",
+        "enum": ["openclaw", "deny"],
+        "default": "openclaw"
+      },
+      "approvalTimeoutMs": {
+        "type": "number",
+        "minimum": 1000,
+        "maximum": 3600000,
+        "default": 120000
+      }
+    }
+  }
+}

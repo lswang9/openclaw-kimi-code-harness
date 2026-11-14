@@ -1,0 +1,7 @@
+{
+  "repository": "https://github.com/MoonshotAI/kimi-code.git",
+  "commit": "f082f04a093a3e71a2263c5461d52507dc31f83a",
+  "package": "@moonshot-ai/kimi-code-sdk",
+  "sourcePath": "packages/node-sdk",
+  "entryPoint": "dist/index.mjs"
+}
