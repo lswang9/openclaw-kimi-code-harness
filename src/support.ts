@@ -34,9 +34,9 @@ export function supportsKimiCodeRoute(ctx: AgentHarnessSupportContext): AgentHar
     return unsupported("the prepared model route does not declare kimi-code compatibility");
   }
   const preparedAuth = providerRoute?.preparedAuth;
-  if (preparedAuth?.source === "profile" || preparedAuth?.source === "direct") {
+  if (preparedAuth?.source === "profile") {
     return unsupported(
-      "OpenClaw profile/direct credentials cannot be injected into the native Kimi Code session; use the official Kimi Code login or native config",
+      "An explicit OpenClaw auth profile cannot be replaced by the native Kimi Code account; remove the profile pin or select the embedded runtime",
     );
   }
   return { supported: true, priority: 100 };

@@ -75,7 +75,7 @@ kimi doctor
 
 插件把认证引导声明为 Harness 所有，通过官方 SDK 使用 `~/.kimi-code`（或官方 `KIMI_CODE_HOME` 解析结果）的配置和 OAuth 状态。插件不读取、复制或记录旧社区插件的私有凭据文件，也不把 OpenClaw API Key 填进 Kimi Code。
 
-官方 SDK 原生配置中的其他可用认证方式可继续使用；本插件不会为它们逆向额外登录流程。如果 OpenClaw 已为一个路由准备 profile/direct 凭据，`supports` 会拒绝该路由，而不是暗中替换认证来源。
+官方 SDK 原生配置中的其他可用认证方式可继续使用；本插件不会为它们逆向额外登录流程。OpenClaw 自动发现的 direct 凭据不会转发给 Kimi Code，执行仍只使用官方原生认证。若用户显式绑定了 OpenClaw auth profile，`supports` 会拒绝该路由，而不是暗中替换用户指定的认证来源。
 
 ## 配置
 

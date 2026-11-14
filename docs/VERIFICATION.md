@@ -14,7 +14,7 @@
 
 - `npm run typecheck`：通过。
 - `npm run build`：通过。
-- `npm test`：34/34 通过，11 个测试文件；包含 supports、原生模型目录、会话映射、流式事件、错误、取消/超时、脱敏、SDK 适配，以及两轮、重启恢复、双会话/双 Agent 隔离、reset 和删除。
+- `npm test`：35/35 通过，11 个测试文件；包含 supports、direct 认证路由、原生模型目录、会话映射、流式事件、错误、取消/超时、脱敏、SDK 适配，以及两轮、重启恢复、双会话/双 Agent 隔离、reset 和删除。
 - `KIMI_CODE_SOURCE_DIR=$PWD/.research/kimi-code npm run sdk:vendor`：通过；从固定官方源码构建并生成 `vendor/kimi-code-sdk.mjs`。
 - 直接 `import()` 上述 vendor 产物：`createKimiHarness` 导出存在。
 - 官方 CLI `node .../@moonshot-ai/kimi-code/dist/main.mjs --version`：`2.6.2`。
@@ -46,3 +46,10 @@
 2. SDK 二次 bundle 需要标准 Node `createRequire`；已修复并通过真实宿主加载。
 3. active-run 注册必须携带宿主 `toolAuthorityFingerprint`；已补齐并通过真实回合。
 4. AttemptResult 保留 OpenClaw 外层模型 ID，避免原生 alias 被误记为模型切换。
+
+## 0.1.1 本机修复验证
+
+- 真实 Gateway 日志确认旧版在 `supports` 阶段拒绝了自动解析的 `preparedAuth.source=direct` 路由。
+- `0.1.1` 允许 direct 路由但不转发该凭据，仍只使用 Kimi Code 官方原生认证；显式 auth profile 仍拒绝。
+- 真实 Gateway 上安装 `0.1.1` 后，通过 `openclaw agent --session-id kimi-code-harness-live-fix ... --json` 返回 `KIMI_CODE_SWITCH_OK`，并确认 `agentHarnessId=kimi-code`。
+- 另一个 `openclaw-lark` 插件的稳定版和 beta 均与当前 OpenClaw 存在独立 `./plugin-sdk` 导出错误；为恢复 Agent 回合，已在本机停用该插件，配置和安装文件保留。

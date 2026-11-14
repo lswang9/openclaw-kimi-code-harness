@@ -36,7 +36,7 @@ OpenClaw AttemptResult + transcript/回复/外层生命周期
 | 主会话选择、reset/delete、持久 transcript | OpenClaw | Harness 实现对应生命周期钩子 |
 | 定时任务和长期记忆 | OpenClaw | 当前输入作为回合上下文送入，不复制为第二套调度器 |
 | 模型选择与外层路由策略 | OpenClaw | `supports` 检查实际 prepared route；Harness 不做隐式 fallback |
-| 原生模型目录、alias 与官方认证 | Kimi Code | Harness 的 `loadModelCatalog` 发布原生模型；官方 SDK 管理配置、OAuth 状态和错误 |
+| 原生模型目录、alias 与官方认证 | Kimi Code | Harness 的 `loadModelCatalog` 发布原生模型；官方 SDK 管理配置、OAuth 状态和错误；direct 凭据不转发，显式 profile 不替换 |
 | Agent Loop、推理、工具选择 | Kimi Code | SDK 原生 `Session.prompt` |
 | 文件、Shell、测试和编程工具 | Kimi Code | 原生工具事件映射到 OpenClaw；不重复执行 |
 | 原生会话历史、锁和自动 compaction | Kimi Code | SDK create/resume；OpenClaw 保存 ID 映射 |

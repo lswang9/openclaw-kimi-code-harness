@@ -21,6 +21,14 @@ describe("supportsKimiCodeRoute", () => {
     expect(supportsKimiCodeRoute(context())).toEqual({ supported: true, priority: 100 });
   });
 
+  it("allows automatically discovered direct credentials without using them", () => {
+    expect(
+      supportsKimiCodeRoute(
+        context({ modelProvider: { preparedAuth: { source: "direct" } } }),
+      ),
+    ).toEqual({ supported: true, priority: 100 });
+  });
+
   it.each([
     [{ requestedRuntime: "auto" }, "explicit-only"],
     [{ provider: "openai" }, "not a Kimi"],
@@ -33,7 +41,7 @@ describe("supportsKimiCodeRoute", () => {
     ],
     [
       { modelProvider: { preparedAuth: { source: "profile" } } },
-      "cannot be injected",
+      "cannot be replaced",
     ],
   ])("rejects incompatible routes", (override, reason) => {
     const result = supportsKimiCodeRoute(context(override));
